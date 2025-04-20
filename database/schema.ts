@@ -1,3 +1,4 @@
+import type { InferSelectModel } from "drizzle-orm";
 import { pgTable, varchar, uuid, timestamp, pgEnum, boolean, text } from "drizzle-orm/pg-core";
 
 const timestamps = {
@@ -13,6 +14,7 @@ export const user = pgTable("users", {
   password: varchar({ length: 255 }).notNull(),
   ...timestamps
 });
+export type SelectUser = InferSelectModel<typeof user>;
 
 export const post = pgTable("posts", {
   id: uuid().primaryKey().defaultRandom(),
@@ -22,3 +24,4 @@ export const post = pgTable("posts", {
   content: text().notNull(),
   ...timestamps
 });
+export type SelectPost = InferSelectModel<typeof post>;
