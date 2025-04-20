@@ -29,7 +29,7 @@ export async function action({ request }: Route.ActionArgs) {
   return null;
 }
 
-export default function Navbar({
+export default function Create({
   loaderData,
   actionData
 }: Route.ComponentProps) {

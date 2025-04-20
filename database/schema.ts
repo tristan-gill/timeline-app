@@ -20,7 +20,8 @@ export const post = pgTable("posts", {
   id: uuid().primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => user.id),
   isPrivate: boolean("is_private").default(false),
-  timestamp: timestamp().notNull(),
+  // TODO parse with timezone
+  timestamp: timestamp({ withTimezone: false }).notNull(),
   content: text().notNull(),
   ...timestamps
 });

@@ -1,8 +1,6 @@
 import { database } from "~/database/context";
 import * as schema from "~/database/schema";
-
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,16 +9,29 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader({ context }: Route.LoaderArgs) {
-  return {
-    message: context.VALUE_FROM_EXPRESS,
-  };
+export async function loader({ request }: Route.LoaderArgs) {
+  const db = database();
+  const posts = await db.select().from(schema.post);
+  return { posts };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
+  const userLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+  const dateFormatter = new Intl.DateTimeFormat(userLocale, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    timeZone: "UTC",
+  });
+  
   return (
-    <Welcome
-      message={loaderData.message}
-    />
+    <div className="flex flex-col">
+      {loaderData.posts.map((post) => (
+        <div key={post.id} className="flex gap-4">
+          <h2>{post.content}</h2>
+          <p>{dateFormatter.format(post.timestamp)}</p>
+        </div>
+      ))}
+    </div>
   );
 }
