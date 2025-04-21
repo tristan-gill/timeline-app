@@ -15,9 +15,28 @@ declare module "react-router" {
 
 export const app = express();
 
-if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
+if (
+  !process.env.DATABASE_URL ||
+  !process.env.DATABASE_HOST ||
+  !process.env.DATABASE_PORT ||
+  !process.env.DATABASE_USER ||
+  !process.env.DATABASE_PASSWORD ||
+  !process.env.DATABASE_DATABASE
+) {
+  throw new Error("Database env variables are required");
+}
 
-const client = postgres(process.env.DATABASE_URL);
+const client = process.env.NODE_ENV === "development" ?
+  postgres(process.env.DATABASE_URL) :
+  postgres({
+    host: process.env.DATABASE_HOST,
+    port: Number(process.env.DATABASE_PORT),
+    database: process.env.DATABASE_DATABASE,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    ssl: "require"
+  }
+);
 const db = drizzle(client, { schema, casing: "snake_case" });
 app.use((_, __, next) => DatabaseContext.run(db, next));
 
