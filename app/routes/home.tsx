@@ -59,10 +59,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col max-h-[calc(100dvh-var(--spacing)*16)] overflow-y-auto">
         {posts.map((post, i) => {
           const isTimestampHidden = i > 1 && posts[i-1].timestamp.getTime() === post.timestamp.getTime();
-          console.log(isTimestampHidden, post.timestamp)
           return (
             <div key={post.id} className="flex p-4 gap-4">
               <div className="w-2/5 flex justify-end items-start pt-0.5">
