@@ -36,34 +36,32 @@ export default function Create({
   const navigation = useNavigation();
   
   return (
-    <div className="flex flex-col">
-      <Form
-        method="post"
-        className="space-y-4 w-full max-w-lg"
-        onSubmit={(event: any) => {
-          if (navigation.state === "submitting") {
-            event.preventDefault();
-          }
-        }}
+    <Form
+      method="post"
+      className="flex flex-col"
+      onSubmit={(event: any) => {
+        if (navigation.state === "submitting") {
+          event.preventDefault();
+        }
+      }}
+    >
+      <input
+        name="content"
+        type="text"
+        placeholder="Event details"
+        required
+      />
+      <input
+        name="timestamp"
+        type="date"
+        required
+      />
+      <button
+        type="submit"
+        disabled={navigation.state === "submitting"}
       >
-        <input
-          name="content"
-          type="text"
-          placeholder="Event details"
-          required
-        />
-        <input
-          name="timestamp"
-          type="date"
-          required
-        />
-        <button
-          type="submit"
-          disabled={navigation.state === "submitting"}
-        >
-          Create
-        </button>
-      </Form>
-    </div>
+        Create
+      </button>
+    </Form>
   );
 }
