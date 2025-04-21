@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 
-if (!process.env.DATABASE) {
-  throw new Error("DATABASE is required");
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is required");
 }
 
 export default defineConfig({
@@ -9,6 +9,6 @@ export default defineConfig({
   schema: "./database/schema.ts",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE,
+    url: process.env.DATABASE_URL,
   },
 });
